@@ -1,0 +1,69 @@
+* {
+    font-family: quicksandregular !important;
+}
+
+input.word {
+    width: 90%;
+    border-bottom: 1px solid #cdcdcd;
+    padding: 5px 10px;
+    font-size: 27px;
+    height: auto;
+    text-align: center;
+    line-height: 27px;
+    display: initial;
+}
+
+h1.result {
+    text-align: center;
+    font-size: 150px;
+}
+
+h3.full {
+    text-align: center;
+    font-size: 18px;
+}
+
+h3.full div {
+    color: #cccccc;
+}
+
+button.clear {
+    width: 90%;
+    font-size: 26px;
+    margin-top: 10px;
+    height: 50px;
+}
+
+.derdiedas {
+    text-align: center;
+}
+
+.platform-android .bar .title {
+    text-align: center;
+}
+
+.bar-footer a {
+    display: block;
+    text-align: center;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+}
+
+.bar-footer {
+    height: 74px;
+    line-height: 74px;
+}
+
+.platform-android .bar .title {
+    line-height: 55px;
+}
+
+.help {
+    margin-top: 30px;
+}
+
+.bar.bar-stable {
+    height: 50px;
+    line-height: 50px;
+}

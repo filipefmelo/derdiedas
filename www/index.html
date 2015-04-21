@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/fonts.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+</head>
+<body ng-app="starter">
+
+<ion-pane>
+    <ion-header-bar class="bar-stable">
+        <h1 class="title">
+            <img src="img/derdiedas_logo.png" alt=""/>
+        </h1>
+    </ion-header-bar>
+    <ion-content ng-controller="MainController" class="derdiedas">
+        <div class="help"
+                ng-hide="result.full">
+            Press "Speak!" or type the word for which you'd like to find out the article in German.
+        </div>
+        <h1 class="result" ng-show="result">
+            {{result.article}}
+            <h3 class="full" ng-show="result.full">
+                ({{result.full}})
+                <div>the {{request.word}}</div>
+            </h3>
+        </h1>
+        <div class="error">
+            {{error.text}}
+        </div>
+        <input
+                id="word"
+                type="text"
+                class="word"
+                placeholder="English noun"
+                ng-model="request.word"
+                ng-keyup="submitQuery($event)"
+                ng-hide="result.full"/>
+        <button class="clear button button-small button-balanced"
+                ng-click="submitQuery({keyCode: 13})"
+                ng-hide="result.full || !request.word">Go!
+        </button>
+        <button class="clear button button-small button-positive"
+                ng-click="speak()"
+                ng-hide="result.full || request.word">Speak!
+        </button>
+        <button class="clear button button-small button-assertive"
+                ng-click="clearEntry()"
+                ng-show="result.full">Clear
+        </button>
+    </ion-content>
+
+    <div class="bar bar-footer">
+        <a browse-to="http://jslab.pt"><img src="img/logo_jslab.png" alt=""/></a>
+    </div>
+</ion-pane>
+</body>
+</html>
