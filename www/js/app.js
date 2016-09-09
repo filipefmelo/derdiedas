@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app = angular.module('starter', ['ionic'])
+var app = angular.module('starter', ['ionic', 'ngResource', 'angulartics', 'angulartics.google.analytics', 'angulartics.google.analytics.cordova'])
 
     .run(function ($ionicPlatform) {
         $ionicPlatform.ready(function () {
@@ -17,6 +17,14 @@ var app = angular.module('starter', ['ionic'])
             }
         });
     });
+
+app.config(function(googleAnalyticsCordovaProvider) {
+    googleAnalyticsCordovaProvider.trackingId = 'UA-62317022-1';
+    googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
+    googleAnalyticsCordovaProvider.debug = false; // default: false
+});
+
+
 app.directive('browseTo', function ($ionicGesture) {
     return {
         restrict: 'A',
@@ -31,7 +39,10 @@ app.directive('browseTo', function ($ionicGesture) {
         }
     }
 });
-app.controller('MainController', function ($scope, $http, $window) {
+
+//UA-62317022-1
+
+app.controller('MainController', function ($scope, $http, $window, $analytics) {
     var allowedCases = ["der", "die", "das"];
     $scope.result = {};
     $scope.error = {};
@@ -48,17 +59,30 @@ app.controller('MainController', function ($scope, $http, $window) {
                 $scope.error.text = "Please enter a single word";
                 return;
             }
+            $analytics.eventTrack('API call', {  category: 'word', label: $scope.request.word });
             $scope.error.text = "Please wait...";
-            $http.get("http://mymemory.translated.net/api/get?q=the%20" + $scope.request.word + "&langpair=en|de").success(function (response) {
+            $http.get("http://mymemory.translated.net/api/get?q=the%20" + $scope.request.word + "&langpair=en|de&key=ed575c9f1fe4febeb85f&de=filipefmelo@gmail.com").success(function (response) {
                 var result = {};
                 result.raw = response.responseData.translatedText;
                 result.splitted = result.raw.split(" ");
                 if (result.splitted.length === 2) {
                     var derdiedas = result.splitted[0].toLowerCase();
                     if (allowedCases.indexOf(derdiedas) !== -1) {
+                        $http.get('https://api.iconfinder.com/v2/icons/search?query=' + $scope.request.word + '&count=1&style=&vector=all&premium=all').then(function (response) {
+                            if (response.data.icons[0]) {
+                                var icons = response.data.icons[0].raster_sizes;
+                                angular.forEach(icons, function (icon) {
+                                    if (icon.size == 128) {
+                                        $scope.icon = icon.formats[0].preview_url;
+                                    }
+                                });
+                            }
+                        });
                         $scope.result.article = derdiedas;
                         $scope.error.text = "";
                         $scope.result.full = result.raw;
+                    } else {
+                        $scope.error.text = "Your request has not returned any results";
                     }
                 } else {
                     $scope.error.text = "Your request has not returned any results";
@@ -83,6 +107,7 @@ app.controller('MainController', function ($scope, $http, $window) {
         $scope.request.word = "";
         $scope.result = {};
         $scope.error = {};
+        $scope.icon = null;
     };
 
     $scope.openLink = function (link) {

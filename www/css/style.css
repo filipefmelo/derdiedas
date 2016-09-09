@@ -21,6 +21,7 @@ h1.result {
 h3.full {
     text-align: center;
     font-size: 18px;
+    text-transform: capitalize;
 }
 
 h3.full div {
@@ -51,8 +52,8 @@ button.clear {
 }
 
 .bar-footer {
-    height: 74px;
-    line-height: 74px;
+    height: 50px;
+    line-height: 30px;
 }
 
 .platform-android .bar .title {
@@ -66,4 +67,8 @@ button.clear {
 .bar.bar-stable {
     height: 50px;
     line-height: 50px;
+}
+
+.img-result {
+    height: 128px;
 }
